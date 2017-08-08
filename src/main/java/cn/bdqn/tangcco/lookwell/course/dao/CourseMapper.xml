@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.bdqn.tangcco.lookwell.course.dao.CourseMapper">
+
+    <resultMap id="CourseResultMap" type="cn.bdqn.tangcco.lookwell.entity.Course">
+        <id column="course_id" property="courseId"></id>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_desc" property="courseDesc"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+        <association property="project" resultMap="ProjectResultMap" javaType="Project"></association>
+    </resultMap>
+    <resultMap id="ProjectResultMap" type="cn.bdqn.tangcco.lookwell.entity.Project">
+        <id column="project_id" property="projectId" ></id>
+        <result column="project_name" property="projectName" ></result>
+        <result column="project_desc" property="projectDesc" ></result>
+        <result column="project_version" property="projectVersion" ></result>
+        <result column="project_status" property="projectStatus" ></result>
+        <result column="create_time" property="createTime" ></result>
+        <result column="update_time" property="updateTime" ></result>
+    </resultMap>
+    <select id="QueryAllCourse" resultMap="CourseResultMap" >
+        SELECT * FROM course c,project p WHERE p.`project_id`=c.`project_id`
+
+    </select>
+    <select id="QueryCourseById" resultMap="CourseResultMap" parameterType="Integer">
+
+        SELECT
+    *
+    FROM course c,project p
+    WHERE p.`project_id`=c.`project_id`
+    AND course_id=#{courseId}
+    </select>
+    <insert id="AddCourse" parameterType="Course">
+
+        INSERT INTO
+        course(course_name,course_desc,project_id,create_time,update_time)
+        VALUES(#{courseName},#{courseDesc},#{project.projectId},#{createTime},#{updateTime})
+    </insert>
+    <update id="UpdateCourse" parameterType="Course">
+
+        UPDATE
+        course
+        SET
+        project_id=#{project.projectId},
+        course_name=#{courseName},
+        course_desc=#{courseDesc},
+        update_time=#{updateTime}
+        WHERE
+        course_id=#{courseId}
+    </update>
+</mapper>

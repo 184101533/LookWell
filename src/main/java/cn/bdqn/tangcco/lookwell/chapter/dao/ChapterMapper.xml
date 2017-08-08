@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.bdqn.tangcco.lookwell.chapter.dao.ChapterMapper">
+    <resultMap id="ChapterResultMap" type="cn.bdqn.tangcco.lookwell.entity.Chapter">
+        <id column="chapter_id" property="chapterId"></id>
+        <result column="chapter_name" property="chapterName"></result>
+        <result column="duration" property="duration"></result>
+        <association property="course" resultMap="CourseResultMap" javaType="Course"></association>
+    </resultMap>
+    <resultMap id="CourseResultMap" type="cn.bdqn.tangcco.lookwell.entity.Course">
+        <id column="course_id" property="courseId"></id>
+        <result column="course_name" property="courseName"></result>
+        <result column="course_desc" property="courseDesc"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+    </resultMap>
+    <select id="QueryAllChapter" resultMap="ChapterResultMap" >
+        SELECT * FROM course c,chapter ch WHERE c.course_id=ch.course_id
+
+    </select>
+    <select id="QueryChapterById" resultMap="ChapterResultMap" parameterType="Integer">
+
+        SELECT
+        *
+        FROM course c,chapter ch
+        WHERE c.course_id=ch.course_id
+        AND ch.chapter_id=#{chapterId}
+    </select>
+    <insert id="AddChapter" parameterType="Chapter">
+
+        INSERT INTO
+        chapter(chapter_name,duration,course_id)
+        VALUES(#{chapterName},#{duration},#{course.courseId})
+    </insert>
+    <update id="UpdateChapter" parameterType="Chapter">
+
+        UPDATE
+        chapter
+        SET
+        course_id=#{course.courseId},
+        chapter_name=#{chapterName},
+        duration=#{duration}
+        WHERE
+        chapter_id=#{chapterId}
+    </update>
+
+</mapper>

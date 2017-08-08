@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.bdqn.tangcco.lookwell.project.dao.ProjectMapper">
+
+    <resultMap id="ProjectResultMap" type="cn.bdqn.tangcco.lookwell.entity.Project">
+        <id column="project_id" property="projectId" ></id>
+        <result column="project_name" property="projectName" ></result>
+        <result column="project_desc" property="projectDesc" ></result>
+        <result column="project_version" property="projectVersion" ></result>
+        <result column="project_status" property="projectStatus" ></result>
+        <result column="create_time" property="createTime" ></result>
+        <result column="update_time" property="updateTime" ></result>
+    </resultMap>
+    <select id="QueryAllProject" resultMap="ProjectResultMap" >
+        SELECT * FROM project
+    </select>
+    <select id="QueryProjectById" resultMap="ProjectResultMap" parameterType="Integer">
+        SELECT
+        *
+        FROM project
+        WHERE project_id=#{projectId}
+    </select>
+    <insert id="AddProject" parameterType="Project">
+
+        INSERT INTO
+        project(project_name,project_desc,project_version,project_status,create_time,update_time)
+        VALUES(#{projectName},#{projectDesc},#{projectVersion},#{projectStatus},#{createTime},#{updateTime})
+    </insert>
+    <update id="UpdateProject" parameterType="Project">
+
+        UPDATE
+        project
+        SET
+        project_name=#{projectName},
+        project_desc=#{projectDesc},
+        project_version=#{projectVersion},
+        project_status=#{projectStatus},
+        update_time=#{updateTime}
+        WHERE
+        project_id=#{projectId}
+    </update>
+</mapper>
